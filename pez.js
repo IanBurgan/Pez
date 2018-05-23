@@ -69,7 +69,7 @@ let pez = (function () {
     render(id);
 
     return {
-      render: function (id) {
+      render: function () {
         render(id);
       }
     }
