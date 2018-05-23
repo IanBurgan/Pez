@@ -39,9 +39,12 @@ let pez = (function () {
     const table = document.getElementById(id);
     table.innerHTML = '';
     table.appendChild(createHeader());
+
+    const body = document.createElement('tbody');
     model['rows'].forEach(function (item) {
-      table.appendChild(createRow(item));
+      body.appendChild(createRow(item));
     });
+    table.appendChild(body);
   }
 
   const pez = function (id, data, options) {
