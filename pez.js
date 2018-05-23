@@ -40,7 +40,6 @@ let pez = (function () {
     table.innerHTML = '';
     table.appendChild(createHeader());
     model['rows'].forEach(function (item) {
-      console.log(item);
       table.appendChild(createRow(item));
     });
   }
