@@ -23,16 +23,16 @@ let pez = (function () {
     const head = document.createElement('thead');
     const headRow = document.createElement('tr');
 
-    model['titles'].forEach(function (item) {
+    Object.keys(model['relation']).forEach(function (title) {
       const cell = document.createElement('th');
-      const t = document.createTextNode(item);
+      const t = document.createTextNode(title);
       cell.appendChild(t);
 
       if (model['sortable']) {
         cell.className = 'sortable';
         cell.onclick = sortColumn;
 
-        if (item === model['sort-col']) {
+        if (title === model['sort-col']) {
           cell.className += model['sort-dir'] ? ' sort-up' : ' sort-down';
         }
       }
@@ -47,7 +47,7 @@ let pez = (function () {
   function createRow(obj) {
     const row = document.createElement('tr');
 
-    model['titles'].forEach(function (title) {
+    Object.keys(model['relation']).forEach(function (title) {
       const key = model.relation[title];
 
       const cell = document.createElement('td');
@@ -68,8 +68,8 @@ let pez = (function () {
     table.appendChild(createHeader());
 
     const body = document.createElement('tbody');
-    model['rows'].forEach(function (item) {
-      body.appendChild(createRow(item));
+    model['rows'].forEach(function (row) {
+      body.appendChild(createRow(row));
     });
     table.appendChild(body);
   }
@@ -78,20 +78,12 @@ let pez = (function () {
     if (!data) {
       throw new TypeError('pez requires non-empty data array');
     }
-    if (options) {
-      if (!options.titles) {
-        throw new TypeError('pez requires titles to be described in options');
-      }
-      if (!options.relation) {
-        throw new TypeError('pez requires relation to be described in options');
-      }
-    } else {
-      throw new TypeError('pez requires options object describing titles and relation')
+    if (options && !options.relation) {
+      throw new TypeError('pez requires options object describing relation');
     }
 
     model['id'] = id;
     model['rows'] = data;
-    model['titles'] = options.titles;
     model['relation'] = options.relation;
     model['sortable'] = options.sorting !== false;
 
