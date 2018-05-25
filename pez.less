@@ -1,0 +1,40 @@
+// Ian Burgan May 2018
+
+// color definitions
+@light-gray: #f9f9f9;
+@dark-gray: #dddddd;
+@black: #111111;
+
+.thd {
+  border: 0.1em solid @dark-gray;
+  padding: 0.5em;
+}
+
+.sortable {
+  background-image: url(sort-both.svg);
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 2em !important;
+}
+
+.sort-up {
+  background-image: url(sort-up.svg);
+}
+
+.sort-down {
+  background-image: url(sort-down.svg);
+}
+
+.pez-table {
+  border-collapse: collapse;
+  width: 100%;
+  height: 100%;
+
+  th, td {
+    .thd;
+  }
+
+  tr:nth-child(even) {
+    background-color: @light-gray;
+  }
+}

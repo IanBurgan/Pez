@@ -1,7 +1,23 @@
 // Ian Burgan May 2018
 let pez = (function () {
+  'use strict';
+
   // globals
   const model = {};
+
+  function sortColumn() {
+    let col = this.innerText;
+    // change direction and sorting column
+    model['sort-dir'] = !((model['sort-col'] === col) && model['sort-dir']);
+    model['sort-col'] = col;
+
+    let key = model.relation[col];
+    model.rows.sort(function (a, b) {
+      return (a[key] > b[key]) === model['sort-dir'];
+    });
+
+    render(model['id']);
+  }
 
   function createHeader() {
     const head = document.createElement('thead');
@@ -11,6 +27,16 @@ let pez = (function () {
       const cell = document.createElement('th');
       const t = document.createTextNode(item);
       cell.appendChild(t);
+
+      if (model['sortable']) {
+        cell.className = 'sortable';
+        cell.onclick = sortColumn;
+
+        if (item === model['sort-col']) {
+          cell.className += model['sort-dir'] ? ' sort-up' : ' sort-down';
+        }
+      }
+
       headRow.appendChild(cell);
     });
 
@@ -38,6 +64,7 @@ let pez = (function () {
     // get and clear table
     const table = document.getElementById(id);
     table.innerHTML = '';
+    table.className = 'pez-table';
     table.appendChild(createHeader());
 
     const body = document.createElement('tbody');
@@ -62,16 +89,19 @@ let pez = (function () {
       throw new TypeError('pez requires options object describing titles and relation')
     }
 
+    model['id'] = id;
+    model['rows'] = data;
     model['titles'] = options.titles;
     model['relation'] = options.relation;
-    model['rows'] = data;
+    model['sortable'] = options.sorting !== false;
 
     render(id);
 
     return {
       render: function () {
         render(id);
-      }
+      },
+      model: model
     }
   }
 
