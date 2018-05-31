@@ -39,11 +39,14 @@ Create and size a `div` to control the table sizing.
 // ajax some data
 // use fields of first item to create table headers
 let headers = Object.keys(json[0]);
+let titles = ['Column 1', 'Column 2'];
 
 pez('id', data, {
-  columns: headers
-})
-
+  titles[0]: headers[0],
+  titles[1]: headers[1]
+});
+```
+```javascript
 Internal Model Structure
 {
   "id": "element-id",
