@@ -2,7 +2,7 @@
 let Pez = (function () {
   'use strict';
 
-  function createHeader(table) {
+  function createHeaders(table) {
     const head = document.createElement('thead');
     const headRow = document.createElement('tr');
 
@@ -31,18 +31,23 @@ let Pez = (function () {
     return head;
   }
 
-  function createRow(rowData, columns) {
-    const row = document.createElement('tr');
+  function createRows(table) {
+    const body = document.createElement('tbody');
 
-    columns.forEach(function (key) {
-      const cell = document.createElement('td');
-      const t = document.createTextNode(rowData[key]);
+    table.rows.forEach(function (row) {
+      const tRow = document.createElement('tr');
+      table.columns.forEach(function (key) {
+        const cell = document.createElement('td');
+        const t = document.createTextNode(row[key]);
 
-      cell.appendChild(t);
-      row.appendChild(cell);
+        cell.appendChild(t);
+        tRow.appendChild(cell);
+      });
+      body.appendChild(tRow);
     });
 
-    return row;
+
+    return body;
   }
 
   function Pez(id, data, options) {
@@ -73,13 +78,8 @@ let Pez = (function () {
     const table = document.getElementById(this.id);
     table.innerHTML = '';
     table.className = 'pez-table';
-    table.appendChild(createHeader(this));
-
-    const body = document.createElement('tbody');
-    this.rows.forEach(function (row) {
-      body.appendChild(createRow(row, self.columns));
-    });
-    table.appendChild(body);
+    table.appendChild(createHeaders(this));
+    table.appendChild(createRows(self));
   }
 
   Pez.prototype.sortColumn = function (col) {
@@ -91,7 +91,6 @@ let Pez = (function () {
     this.activeCol = col;
 
     let key = this.columns[this.headers.indexOf(col)];
-    console.log(key);
     this.rows.sort(function (a, b) {
       return (a[key] > b[key]) === self.sortDir;
     });
