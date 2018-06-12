@@ -19,7 +19,6 @@ let Pez = (function () {
         };
 
         if (title === table.activeCol) {
-          console.log();
           cell.className += table.sortDir ? ' sort-up' : ' sort-down';
         }
       }
